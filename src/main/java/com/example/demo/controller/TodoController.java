@@ -67,6 +67,15 @@ public class TodoController {
         return "redirect:/todo";
     }
 
+    @PostMapping("/{id}/toggle")
+    public String toggle(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        boolean toggled = todoService.toggleCompleted(id);
+        if (!toggled) {
+            redirectAttributes.addFlashAttribute("errorMessage", "状態の更新に失敗しました");
+        }
+        return "redirect:/todo";
+    }
+
     @PostMapping("/confirm")
     public String confirm(@RequestParam("title") String title, Model model) {
         model.addAttribute("title", title);
@@ -81,14 +90,10 @@ public class TodoController {
 
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
-        try {
-            boolean deleted = todoService.deleteById(id);
-            if (deleted) {
-                redirectAttributes.addFlashAttribute("successMessage", "ToDoを削除しました");
-            } else {
-                redirectAttributes.addFlashAttribute("errorMessage", "削除に失敗しました");
-            }
-        } catch (RuntimeException e) {
+        boolean deleted = todoService.deleteById(id);
+        if (deleted) {
+            redirectAttributes.addFlashAttribute("successMessage", "ToDoを削除しました");
+        } else {
             redirectAttributes.addFlashAttribute("errorMessage", "削除に失敗しました");
         }
         return "redirect:/todo";

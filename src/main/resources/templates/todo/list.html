@@ -38,16 +38,21 @@
                     <th scope="col" class="text-center" style="width: 90px;">ID</th>
                     <th scope="col">タイトル</th>
                     <th scope="col" style="width: 140px;">ステータス</th>
-                    <th scope="col" class="text-center" style="width: 200px;">操作</th>
+                    <th scope="col" class="text-center" style="width: 280px;">操作</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="todo : ${todos}">
                     <td class="text-center" th:text="${todo.id}">1</td>
-                    <td th:text="${todo.title}">サンプルタイトル</td>
+                    <td th:classappend="${todo.completed} ? 'text-decoration-line-through text-muted' : ''"
+                        th:text="${todo.title}">サンプルタイトル</td>
                     <td th:text="${todo.completed} ? '完了' : '未完了'">未完了</td>
                     <td>
                         <div class="d-flex justify-content-center gap-2">
+                            <form th:action="@{/todo/{id}/toggle(id=${todo.id})}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-outline-success btn-sm"
+                                        th:text="${todo.completed} ? '未完了に戻す' : '完了にする'">完了にする</button>
+                            </form>
                             <a class="btn btn-outline-primary btn-sm" th:href="@{/todo/{id}/edit(id=${todo.id})}">編集</a>
                             <form th:action="@{/todo/{id}/delete(id=${todo.id})}" method="post" class="d-inline"
                               onsubmit="return confirm('本当に削除しますか？');">
