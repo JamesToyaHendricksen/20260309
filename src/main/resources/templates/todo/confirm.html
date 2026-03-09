@@ -12,17 +12,20 @@
         <div class="col-md-8 col-lg-6">
             <h1 class="h4 mb-4">登録内容の確認</h1>
 
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h2 class="h6 text-muted mb-2">タイトル</h2>
-                    <p class="fs-5 mb-0" th:text="${title}">サンプルタスク</p>
+            <form th:action="@{/todo/complete}" method="post">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <label for="confirmTitle" class="form-label text-muted">タイトル</label>
+                        <input type="text" id="confirmTitle" class="form-control" th:value="${title}" readonly>
+                        <input type="hidden" name="title" th:value="${title}">
+                    </div>
                 </div>
-            </div>
 
-            <div class="d-flex gap-2">
-                <a class="btn btn-success" th:href="@{/todo/complete}">登録</a>
-                <a class="btn btn-outline-secondary" th:href="@{/todo/new}">戻る</a>
-            </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-success">登録</button>
+                    <a href="javascript:history.back()" class="btn btn-outline-secondary">戻る</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>
