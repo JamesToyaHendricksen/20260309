@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.model.Todo;
 import com.example.demo.service.TodoService;
 
 @Controller
@@ -23,11 +24,7 @@ public class TodoController {
 
     @GetMapping
     public String list(Model model) {
-        List<TodoView> todos = List.of(
-                new TodoView(1L, "Learn Spring Boot", "Not Started"),
-                new TodoView(2L, "Build ToDo list page", "In Progress"),
-                new TodoView(3L, "Run tests", "Done"));
-
+        List<Todo> todos = todoService.findAll();
         model.addAttribute("todos", todos);
         return "todo/list";
     }
@@ -47,8 +44,5 @@ public class TodoController {
     public String complete(@RequestParam("title") String title) {
         todoService.create(title);
         return "redirect:/todo";
-    }
-
-    public record TodoView(Long id, String title, String status) {
     }
 }
