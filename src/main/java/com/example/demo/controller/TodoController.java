@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.model.Todo;
 import com.example.demo.service.TodoService;
@@ -34,6 +34,17 @@ public class TodoController {
     @GetMapping("/new")
     public String createForm() {
         return "todo/form";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
+        Todo todo = todoService.findById(id);
+        if (todo == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "指定したToDoが見つかりませんでした");
+            return "redirect:/todo";
+        }
+        model.addAttribute("todo", todo);
+        return "todo/edit";
     }
 
     @PostMapping("/confirm")
